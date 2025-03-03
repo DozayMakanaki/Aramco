@@ -86,7 +86,7 @@ const FormComponent = () => {
   required
 />
 
-          <button type="submit" className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition duration-300">Submit</button>
+          <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">Submit</button>
         </form>
       </div>
     </div>
