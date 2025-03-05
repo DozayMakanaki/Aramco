@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "swiper/css";
-import Form from "./Form";
-import Footer from "./Footer";  // Importing the form component
+import Footer from "./Footer";
 
 const About = () => {
-  const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate function
 
   const teamMembers = [
     { name: "John Doe", title: "CEO & Founder", image: "https://via.placeholder.com/150" },
@@ -29,7 +29,7 @@ const About = () => {
       <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="max-w-5xl space-y-6">
         <h1 className="text-5xl font-extrabold text-gray-900">About <span className="text-indigo-500">Us</span></h1>
         <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-          ARAMCO specializes in an array of mortgage and real estate products for San Diego homeowners. The Aramco Team is committed to providing our clients with the highest quality financial services and advice, and is motivated more than anything by complete customer satisfaction as evidenced by our A+ rating with the BBB...
+          ARAMCO specializes in an array of mortgage and real estate products for San Diego homeowners...
         </p>
       </motion.div>
 
@@ -49,27 +49,18 @@ const About = () => {
       <div className="mt-16 max-w-5xl text-center">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-8">Meet the <span className="text-pink-500">Team</span></h2>
 
-      <div className="hidden md:flex flex-wrap justify-center gap-8">
-  {teamMembers.map((member, index) => (
-    <motion.div key={index} whileHover={{ scale: 1.05 }} className="bg-white p-6 rounded-lg shadow-lg text-center w-60">
-      <img src={member.image} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-3 border-4 border-gray-200" />
-      <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
-      <p className="text-gray-600 text-sm">{member.title}</p>
-    </motion.div>
-  ))}
-</div>
-  {/* GRID ON LARGE SCREENS */}
-      
+        <div className="hidden md:flex flex-wrap justify-center gap-8">
+          {teamMembers.map((member, index) => (
+            <motion.div key={index} whileHover={{ scale: 1.05 }} className="bg-white p-6 rounded-lg shadow-lg text-center w-60">
+              <img src={member.image} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-3 border-4 border-gray-200" />
+              <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+              <p className="text-gray-600 text-sm">{member.title}</p>
+            </motion.div>
+          ))}
+        </div>
 
         {/* SWIPER ON MOBILE */}
-        <Swiper
-          spaceBetween={10}
-          slidesPerView={1}
-          centeredSlides={true}
-          grabCursor={true}
-          loop={true}
-          className="w-full md:hidden mt-4"
-        >
+        <Swiper spaceBetween={10} slidesPerView={1} centeredSlides={true} grabCursor={true} loop={true} className="w-full md:hidden mt-4">
           {teamMembers.map((member, index) => (
             <SwiperSlide key={index} className="flex justify-center">
               <motion.div whileHover={{ scale: 1.05 }} className="bg-white p-6 rounded-lg shadow-lg text-center w-60 mx-auto">
@@ -106,28 +97,19 @@ const About = () => {
         </section>
       </motion.div>
 
-      {/* Get in Touch Button */}
+      {/* Apply Button (Navigate to /apply) */}
       <motion.div whileHover={{ scale: 1.05 }} className="mt-12">
-        {!showForm && (
-          <button onClick={() => setShowForm(true)} className="px-6 py-3 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-all">
-            Apply
-          </button>
-        )}
+        <button
+          onClick={() => navigate("/apply")} // Navigate to Form Page
+          className="px-6 py-3 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-all"
+        >
+          Apply
+        </button>
       </motion.div>
 
-
-      {/* Render Form if ShowForm is True */}
-      {showForm && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="mt-12 w-full max-w-lg">
-          <Form />
-          <button onClick={() => setShowForm(false)} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md">Close</button>
-        </motion.div>
-      )}
-      
+  
     </div>
-    
   );
-  <Footer />
 };
 
 export default About;
