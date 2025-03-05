@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import monitorCardBg from '../assets/monitor-card.jpg';
 
 const MonitorSection = () => {
+  const navigate = useNavigate(); // Initialize navigation
+
   return (
     <motion.section 
       variants={fadeIn('up', 0.2)}
@@ -19,12 +22,6 @@ const MonitorSection = () => {
           variants={fadeIn('right', 0.3)}
           className="w-full md:w-1/2"
         >
-          <motion.span 
-            variants={fadeIn('up', 0.4)}
-            className="text-emerald-500 font-semibold"
-          >
-            
-          </motion.span>
           <motion.h2 
             variants={textVariant(0.5)}
             className="text-3xl md:text-4xl font-bold text-navy-900 mt-4 mb-6 md:w-4/5"
@@ -35,16 +32,16 @@ const MonitorSection = () => {
             variants={fadeIn('up', 0.6)}
             className="text-gray-600 mb-8 md:w-4/5"
           >
-            Our team of experienced Mortgage Loan Originators will insure you get the perfect financing lined up for your next transaction.
-
-Whether you are are purchasing a new building, looking for cash-out on a current property, or looking to renovate your apartment buildings, ARAMCO is standing by with aggressive commercial real estate loans tailored to fit your needs.
-
-Contact one of our Commercial Loan Specialists and get started today!
+            Our team of experienced Mortgage Loan Originators will ensure you get the perfect financing lined up for your next transaction.
+            <br /><br />
+            Whether you are purchasing a new building, looking for cash-out on a current property, or looking to renovate your apartment buildings, ARAMCO is standing by with aggressive commercial real estate loans tailored to fit your needs.
+            <br /><br />
+            Contact one of our Commercial Loan Specialists and get started today!
           </motion.p>
-          <motion.a 
+          {/* <motion.button 
             variants={fadeIn('up', 0.7)}
-            href="#" 
-            className="text-blue-500 font-semibold flex items-center gap-2 hover:gap-4 transition-all"
+            onClick={() => navigate('/residential')}
+            className="text-blue-500 font-semibold flex items-center gap-2 hover:gap-4 transition-all cursor-pointer"
           >
             Learn more about monitoring
             <motion.svg 
@@ -61,10 +58,10 @@ Contact one of our Commercial Loan Specialists and get started today!
                 d="M17 8l4 4m0 0l-4 4m4-4H3" 
               />
             </motion.svg>
-          </motion.a>
+          </motion.button> */}
         </motion.div>
 
-        {/* Right side - Swiper with background */}
+        {/* Right side - Image */}
         <motion.div 
           variants={fadeIn('left', 0.3)}
           className="w-full md:w-1/2 relative"
@@ -83,7 +80,7 @@ Contact one of our Commercial Loan Specialists and get started today!
         </motion.div>
       </div>
     </motion.section>
-  )
-}
+  );
+};
 
-export default MonitorSection 
+export default MonitorSection;

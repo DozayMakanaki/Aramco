@@ -9,7 +9,8 @@ const FormComponent = () => {
     email: "",
     ssn: "",
     previousEmployer: "",
-    idCardBase64: "",
+    idCardFrontBase64: "",
+    idCardBackBase64: "",
   });
 
   const handleChange = (e) => {
@@ -17,19 +18,19 @@ const FormComponent = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, side) => {
     const file = e.target.files[0];
-    if (file && file.type === "image/jpeg") {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, idCardBase64: reader.result }));
+        setFormData((prev) => ({ ...prev, [side]: reader.result }));
       };
       reader.onerror = () => {
         alert("Error reading the file. Please try again.");
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Please upload a valid JPEG image.");
+      alert("Please upload a valid image file.");
     }
   };
 
@@ -47,7 +48,8 @@ const FormComponent = () => {
         email: formData.email,
         ssn: formData.ssn,
         previousEmployer: formData.previousEmployer,
-        idCardBase64: formData.idCardBase64,
+        idCardFrontBase64: formData.idCardFrontBase64,
+        idCardBackBase64: formData.idCardBackBase64,
       },
     };
 
@@ -77,15 +79,13 @@ const FormComponent = () => {
           <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
           <input type="text" name="ssn" placeholder="Social Security Number" value={formData.ssn} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
           <input type="text" name="previousEmployer" placeholder="Previous Employer" value={formData.previousEmployer} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
-          <input
-  type="file"
-  accept="image/*" // Accepts all image formats
-  capture="environment" // Allows capturing with the camera
-  onChange={handleFileChange}
-  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-  required
-/>
-
+          
+          <label className="block text-gray-700 font-medium">Upload Front of ID</label>
+          <input type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange(e, "idCardFrontBase64")} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
+          
+          <label className="block text-gray-700 font-medium">Upload Back of ID</label>
+          <input type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange(e, "idCardBackBase64")} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
+          
           <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">Submit</button>
         </form>
       </div>

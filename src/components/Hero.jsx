@@ -1,12 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
 import heroImage from '../assets/hero-image.png';
 
-const Hero = ({ formRef }) => {
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
-  };
+const Hero = () => {
+  const navigate = useNavigate();
 
   return (
     <section id="home" className="flex flex-col md:flex-row justify-between items-center px-4 sm:px-6 lg:px-8 pt-44 pb-16 container mx-auto">
@@ -47,9 +46,9 @@ const Hero = ({ formRef }) => {
           whileInView="show"
           className="flex gap-3 max-w-md"
         >
-          {/* Scroll to Form Button */}
+          {/* Navigate to New Page */}
           <button 
-            onClick={scrollToForm}
+            onClick={() => navigate('/about')}
             className="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 cursor-pointer transition-all hover:shadow-lg hover:shadow-blue-100 active:scale-95"
           >
             →
