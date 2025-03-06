@@ -9,9 +9,8 @@ const About = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
   const teamMembers = [
-    { name: "John Doe", title: "CEO & Founder", image: "https://via.placeholder.com/150" },
-    { name: "Jane Smith", title: "Head of Operations", image: "https://via.placeholder.com/150" },
-    { name: "Mike Johnson", title: "Lead Mortgage Advisor", image: "https://via.placeholder.com/150" }
+    { name: "Benjamin Moore", title: "CEO & Founder",  },
+
   ];
 
   const slidingImages = [
@@ -64,7 +63,7 @@ const About = () => {
           {teamMembers.map((member, index) => (
             <SwiperSlide key={index} className="flex justify-center">
               <motion.div whileHover={{ scale: 1.05 }} className="bg-white p-6 rounded-lg shadow-lg text-center w-60 mx-auto">
-                <img src={member.image} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-3 border-4 border-gray-200" />
+            
                 <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
                 <p className="text-gray-600 text-sm">{member.title}</p>
               </motion.div>
