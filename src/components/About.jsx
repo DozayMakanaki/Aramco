@@ -34,7 +34,7 @@ const About = () => {
       </motion.div>
 
       {/* Our Work Section */}
-      <div className="mt-16 max-w-5xl">
+      {/* <div className="mt-16 max-w-5xl">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Work</h2>
         <Swiper spaceBetween={20} slidesPerView={1.5} breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }} className="w-full">
           {slidingImages.map((image, index) => (
@@ -43,13 +43,13 @@ const About = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
+      </div> */}
 
       {/* Meet the Team Section */}
       <div className="mt-16 max-w-5xl text-center">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-8">Meet the <span className="text-pink-500">Team</span></h2>
 
-        <div className="hidden md:flex flex-wrap justify-center gap-8">
+        {/* <div className="hidden md:flex flex-wrap justify-center gap-8">
           {teamMembers.map((member, index) => (
             <motion.div key={index} whileHover={{ scale: 1.05 }} className="bg-white p-6 rounded-lg shadow-lg text-center w-60">
               <img src={member.image} alt={member.name} className="w-24 h-24 mx-auto rounded-full mb-3 border-4 border-gray-200" />
@@ -57,7 +57,7 @@ const About = () => {
               <p className="text-gray-600 text-sm">{member.title}</p>
             </motion.div>
           ))}
-        </div>
+        </div> */}
 
         {/* SWIPER ON MOBILE */}
         <Swiper spaceBetween={10} slidesPerView={1} centeredSlides={true} grabCursor={true} loop={true} className="w-full md:hidden mt-4">

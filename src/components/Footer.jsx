@@ -22,14 +22,14 @@ const AramcoFooter = () => {
             <p className="text-gray-400">935 W. San Marcos Blvd, Suite 100</p>
             <p className="text-gray-400">San Marcos, CA 92078</p>
             <p className="mt-2">
-              <span className="font-semibold">Phone:</span> (877) 700-0942
+              <span className="font-semibold"></span> 
             </p>
-            <p>
+            {/* <p>
               <span className="font-semibold">Email:</span>{" "}
               <a href="mailto:info@aramco.biz" className="text-blue-400 hover:underline">
                 info@aramco.biz
               </a>
-            </p>
+            </p> */}
           </div>
 
           {/* Mortgage Commitment */}
@@ -42,9 +42,9 @@ const AramcoFooter = () => {
         </div>
 
         {/* Equal Housing Opportunity */}
-        <div className="flex justify-center md:justify-start mt-6">
+        {/* <div className="flex justify-center md:justify-start mt-6">
           <img src="/equal-housing.png" alt="Equal Housing Opportunity" className="w-20" />
-        </div>
+        </div> */}
 
         {/* Disclaimer */}
         <div className="mt-6 text-sm text-gray-400 text-center md:text-left">
@@ -65,8 +65,7 @@ const AramcoFooter = () => {
             Arizona (AZ DIFI), and Texas (SML).
           </p>
           <p className="mt-2">
-            Real Estate Broker, California Department of Real Estate: 01853626 NMLS#: 277316 |
-            AZ DIFI#: MB-0951277 AZ DIFI#: MB-BR-1017156 / AZ DIFI#: MB-BR-1015046
+            
           </p>
         </div>
 
