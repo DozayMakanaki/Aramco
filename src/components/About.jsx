@@ -102,7 +102,7 @@ const About = () => {
           onClick={() => navigate("/apply")} // Navigate to Form Page
           className="px-6 py-3 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-all"
         >
-          Apply
+          New Employee Application
         </button>
       </motion.div>
 
