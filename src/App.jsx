@@ -11,7 +11,7 @@ import About from "./components/About";
 import Residential from "./components/Residential";
 import Commercial from "./components/Commercial";
 import FormPage from "./components/FormPage"; 
-import SuccessPage from "./components/SuccessPage"; // ✅ Import Success Page
+import SuccessPage from "./components/Success"; // ✅ Import Success Page
 
 function Layout() {
   const location = useLocation();
