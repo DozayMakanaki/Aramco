@@ -10,17 +10,19 @@ import Footer from "./components/Footer";
 import About from "./components/About";
 import Residential from "./components/Residential";
 import Commercial from "./components/Commercial";
-import FormPage from "./components/FormPage"; // ✅ Import Form Page
+import FormPage from "./components/FormPage"; 
+import SuccessPage from "./components/SuccessPage"; // ✅ Import Success Page
 
 function Layout() {
   const location = useLocation();
   
-  // ✅ Ensure navbar is hidden on the form page
+  // ✅ Hide Navbar on Apply & Success pages
   const showNavbar =
     location.pathname !== "/about" &&
     location.pathname !== "/residential" &&
     location.pathname !== "/commercial" &&
-    location.pathname !== "/apply"; // ✅ Hides Navbar on Apply Page
+    location.pathname !== "/apply" &&
+    location.pathname !== "/success"; // ✅ Hides Navbar on Success Page too
 
   return (
     <main className="relative min-h-screen overflow-x-hidden">
@@ -46,6 +48,7 @@ function Layout() {
           <Route path="/residential" element={<Residential />} />
           <Route path="/commercial" element={<Commercial />} />
           <Route path="/apply" element={<FormPage />} /> {/* ✅ Form Page without Navbar */}
+          <Route path="/success" element={<SuccessPage />} /> {/* ✅ Success Page without Navbar */}
         </Routes>
       </div>
     </main>
