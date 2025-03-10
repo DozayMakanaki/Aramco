@@ -10,19 +10,19 @@ const testimonials = [
   {
     id: 1,
     name: "Benjamin Moore",
-    image: "https://randomuser.me/api/portraits/men/7.jpg",
+    image: "https://randomuser.me/api/portraits/men/13.jpg",
     text: "C.E.O.",
   },
   {
     id: 2,
     name: "Mike Chris",
-    image: "https://randomuser.me/api/portraits/men/50.jpg",
+    image: "https://randomuser.me/api/portraits/men/19.jpg",
     text: "Manager",
   },
   {
     id: 3,
     name: "Robert Dow",
-    image: "https://randomuser.me/api/portraits/men/90.jpg",
+    image: "https://randomuser.me/api/portraits/men/29.jpg",
     text: "Human Resource!",
   },
 ];
