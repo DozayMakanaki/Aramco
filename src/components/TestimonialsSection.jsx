@@ -9,40 +9,23 @@ import { fadeIn, textVariant } from "../utils/motion";
 const testimonials = [
   {
     id: 1,
-    name: "Robin Ayala Doe", 
-    image: "https://randomuser.me/api/portraits/men/77.jpg",
-    text: "Aramco streamlines the homeownership journey, offering expert solutions for purchasing, refinancing, and reverse mortgages. With a focus on innovation and client satisfaction, they make financing simple and stress-free.",
+    name: "Benjamin Moore", 
+    image: "https://randomuser.me/api/portraits/men/7.jpg",
+    text: " C.E.O.",
   },
   {
     id: 2,
-    name: "John De marli",
-    image: "https://randomuser.me/api/portraits/women/90.jpg", 
-    text: "Aramco simplifies home financing with expert guidance in purchasing, refinancing, and reverse mortgages. Their commitment to personalized service and smooth transactions makes them a trusted choice for homeowners seeking financial freedom.",
+    name: "Mike Chris",
+    image: "https://randomuser.me/api/portraits/men/50.jpg", 
+    text: " Manager ",
   },
   {
     id: 3,
-    name: "Rowhan Smith",
+    name: "Robert Dow ",
     image: "https://randomuser.me/api/portraits/men/90.jpg",
-    text: "Aramco transforms the homeownership experience with expert solutions for buying, refinancing, and reverse mortgages. Their seamless process, personalized approach, and industry expertise make them a trusted partner for homeowners at every stage. Reliable, efficient, and dedicated to your financial well-being!",
+    text: "Human Resource!",
   },
-  {
-    id: 4,
-    name: "Sarah Johnson",
-    image: "https://randomuser.me/api/portraits/women/45.jpg",
-    text: "Aramco simplifies home financing, whether you're buying, refinancing, or exploring a reverse mortgage. Their expertise and dedication ensure a smooth and hassle-free experience for every homeowner.",
-  },
-  {
-    id: 5,
-    name: "Michael Chen",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    text: "Aramco transforms homeownership with expert solutions for buying, refinancing, and reverse mortgages, making the process seamless and stress-free.",
-  },
-  {
-    id: 6,
-    name: "Emma Wilson",
-    image: "https://randomuser.me/api/portraits/women/28.jpg",
-    text: "What impressed me most was how quickly they responded to my requests. The team is professional, knowledgeable, and truly cares about their customers' success.",
-  },
+ 
 
 ];
 
@@ -57,13 +40,13 @@ const TestimonialsSection = () => {
           variants={textVariant(0.2)}
           className="text-3xl md:text-4xl font-bold mb-4"
         >
-          What our happy client say
+        Our Team
         </motion.h2>
         <motion.p 
           variants={fadeIn('up', 0.4)}
           className="text-gray-600"
         >
-          Things that make it the best place to start trading
+          
         </motion.p>
       </motion.div>
 

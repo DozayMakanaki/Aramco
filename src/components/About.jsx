@@ -9,8 +9,8 @@ const About = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
   const teamMembers = [
-    { name: "Benjamin Moore", title: "CEO & Founder",  },
-
+    { name: "Benjamin Moore", title: "CEO & Founder", image: "https://via.placeholder.com/150"  },
+    
   ];
 
   const slidingImages = [
